@@ -52,10 +52,10 @@ jobs:
       matrix:
         include:
           - destination: platform=macOS
-          - destination: platform=iOS Simulator,name=iPhone 17 Pro Max
-          - destination: platform=tvOS Simulator,name=Apple TV 4K (3rd generation)
-          - destination: platform=watchOS Simulator,name=Apple Watch Ultra 3 (49mm)
-          - destination: platform=visionOS Simulator,name=Apple Vision Pro
+          - destination: platform=iOS Simulator,name=iPhone 17 Pro Max,OS=26.1
+          - destination: platform=tvOS Simulator,name=Apple TV 4K (3rd generation),OS=26.1
+          - destination: platform=watchOS Simulator,name=Apple Watch Ultra 3 (49mm),OS=26.1
+          - destination: platform=visionOS Simulator,name=Apple Vision Pro,OS=26.1
     steps:
       - uses: actions/checkout@v6
 
