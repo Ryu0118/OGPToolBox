@@ -14,7 +14,7 @@ A Swift toolbox for fetching and displaying Open Graph Protocol (OGP) images fro
 
 ## Installation
 
-Add to your `Package.swift`:
+Add the package to your `Package.swift` dependencies:
 
 ```swift
 dependencies: [
@@ -23,6 +23,8 @@ dependencies: [
 ```
 
 ## Usage
+
+The simplest way to display an OGP image is with `OGPImageView`. Just pass a URL and the view handles fetching, caching, and display automatically.
 
 ### Display an OGP Image
 
@@ -39,6 +41,8 @@ struct ContentView: View {
 
 ### Custom Content and Placeholder
 
+You can customize how the image is displayed and provide a placeholder while loading:
+
 ```swift
 OGPImageView(url: url) { image in
     image.resizable()
@@ -48,6 +52,8 @@ OGPImageView(url: url) { image in
 ```
 
 ### Phase-Based Handling
+
+For more control, use the phase-based initializer to handle loading, success, and failure states individually:
 
 ```swift
 OGPImageView(url: url) { phase in
@@ -64,6 +70,8 @@ OGPImageView(url: url) { phase in
 
 ### Custom Pipeline
 
+By default, `OGPImageView` uses a shared pipeline. You can create your own pipeline for custom caching behavior:
+
 ```swift
 import OGPPipeline
 
@@ -76,6 +84,8 @@ var body: some View {
 
 ### Fetch Directly
 
+If you need the raw data without a SwiftUI view, use `OGPPipeline` directly:
+
 ```swift
 import OGPPipeline
 
@@ -85,21 +95,34 @@ let metadata = try await OGPPipeline.shared.fetchMetadata(from: url)
 
 ## Caching
 
+OGPToolBox provides flexible caching options. Choose a preset or configure your own policy:
+
 ```swift
 import OGPPipeline
 
-// Memory only
+// Memory only - cached data is cleared when the app terminates
 OGPPipeline(configuration: .memoryOnly)
 
-// Memory and disk
+// Memory and disk (default) - cached data persists across app launches
 OGPPipeline(configuration: .default)
 
-// Custom
+// Custom - fine-tune TTL and storage for metadata and images separately
 OGPPipeline(configuration: OGPPipelineConfiguration(
     metadataCachePolicy: OGPCachePolicy(cacheSystem: .memory, ttl: .hours(1)),
     imageCachePolicy: OGPCachePolicy(cacheSystem: .memoryAndDisk(), ttl: .days(7))
 ))
 ```
+
+## Modules
+
+The library is split into focused modules. Most users only need `OGPImageView`.
+
+| Module | Description |
+|--------|-------------|
+| `OGPImageView` | SwiftUI view for displaying OGP images |
+| `OGPPipeline` | Fetch metadata/images with caching |
+| `OGPMetadata` | Parse OGP metadata from HTML |
+| `OGPCache` | Cache protocol for custom implementations |
 
 ## License
 
