@@ -44,8 +44,8 @@ public struct OGPImageView<Placeholder: View, ErrorContent: View>: View {
         self.url = url
         self.contentMode = contentMode
         self.placeholder = placeholder
-        self.errorContent = error
-        self.fetcher = OGPImageDataFetcher(
+        errorContent = error
+        fetcher = OGPImageDataFetcher(
             metadataCachePolicy: metadataCachePolicy,
             imageCachePolicy: imageCachePolicy
         )
@@ -64,12 +64,12 @@ public struct OGPImageView<Placeholder: View, ErrorContent: View>: View {
         case .empty:
             placeholder()
 
-        case .success(let image):
+        case let .success(image):
             image
                 .resizable()
                 .aspectRatio(contentMode: contentMode)
 
-        case .failure(let error):
+        case let .failure(error):
             errorContent(error)
 
         @unknown default:
@@ -94,20 +94,18 @@ public struct OGPImageView<Placeholder: View, ErrorContent: View>: View {
 
     private func makeImage(from data: Data) -> Image? {
         #if canImport(UIKit)
-        guard let uiImage = UIImage(data: data) else { return nil }
-        return Image(uiImage: uiImage)
+            guard let uiImage = UIImage(data: data) else { return nil }
+            return Image(uiImage: uiImage)
         #elseif canImport(AppKit)
-        guard let nsImage = NSImage(data: data) else { return nil }
-        return Image(nsImage: nsImage)
+            guard let nsImage = NSImage(data: data) else { return nil }
+            return Image(nsImage: nsImage)
         #else
-        return nil
+            return nil
         #endif
     }
 }
 
-// MARK: - Convenience Initializers
-
-extension OGPImageView where Placeholder == ProgressView<EmptyView, EmptyView>, ErrorContent == EmptyView {
+public extension OGPImageView where Placeholder == ProgressView<EmptyView, EmptyView>, ErrorContent == EmptyView {
     /// Creates an OGP image view with a default progress indicator placeholder.
     ///
     /// - Parameters:
@@ -115,7 +113,7 @@ extension OGPImageView where Placeholder == ProgressView<EmptyView, EmptyView>, 
     ///   - contentMode: How the image should be scaled to fit the available space.
     ///   - metadataCachePolicy: The caching policy for OGP metadata.
     ///   - imageCachePolicy: The caching policy for image data.
-    public init(
+    init(
         url: URL,
         contentMode: ContentMode = .fit,
         metadataCachePolicy: OGPCachePolicy<OGPMetadata> = .none,
@@ -132,7 +130,7 @@ extension OGPImageView where Placeholder == ProgressView<EmptyView, EmptyView>, 
     }
 }
 
-extension OGPImageView where ErrorContent == EmptyView {
+public extension OGPImageView where ErrorContent == EmptyView {
     /// Creates an OGP image view with a custom placeholder.
     ///
     /// - Parameters:
@@ -141,7 +139,7 @@ extension OGPImageView where ErrorContent == EmptyView {
     ///   - metadataCachePolicy: The caching policy for OGP metadata.
     ///   - imageCachePolicy: The caching policy for image data.
     ///   - placeholder: A view builder that creates the placeholder view.
-    public init(
+    init(
         url: URL,
         contentMode: ContentMode = .fit,
         metadataCachePolicy: OGPCachePolicy<OGPMetadata> = .none,
@@ -159,8 +157,6 @@ extension OGPImageView where ErrorContent == EmptyView {
     }
 }
 
-// MARK: - OGPImagePhase
-
 /// The current phase of the asynchronous OGP image loading operation.
 public enum OGPImagePhase: Sendable {
     /// No image is loaded.
@@ -172,8 +168,6 @@ public enum OGPImagePhase: Sendable {
     /// An image failed to load with an error.
     case failure(Error)
 }
-
-// MARK: - Errors
 
 /// Errors that can occur during OGP image view operations.
 public enum OGPImageViewError: Error, Sendable {

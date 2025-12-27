@@ -5,8 +5,6 @@ import Testing
 
 @Suite
 struct MemoryCacheTests {
-    // MARK: - Basic Operations
-
     @Test(arguments: BasicOperationTestCase.allCases)
     func basicOperations(_ testCase: BasicOperationTestCase) async {
         let cache = MemoryCache<String>(maxCount: nil, maxBytes: nil, ttl: nil)
@@ -63,8 +61,6 @@ struct MemoryCacheTests {
         ]
     }
 
-    // MARK: - TTL Tests
-
     @Test(arguments: TTLTestCase.allCases)
     func ttlBehavior(_ testCase: TTLTestCase) async throws {
         let cache = MemoryCache<String>(maxCount: nil, maxBytes: nil, ttl: testCase.ttl)
@@ -91,8 +87,6 @@ struct MemoryCacheTests {
             TTLTestCase(ttl: nil, sleepMilliseconds: nil, expectedValue: "value", testDescription: "no TTL never expires"),
         ]
     }
-
-    // MARK: - Complex Value Tests
 
     @Test
     func storesComplexCodableValues() async {

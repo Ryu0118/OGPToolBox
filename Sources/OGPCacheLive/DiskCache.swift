@@ -18,7 +18,7 @@ package actor DiskCache<Value: Sendable & Codable>: OGPCaching {
     package init(name: String, baseDirectory: URL? = nil, ttl: TimeInterval?, maxBytes: Int?) throws {
         let fm = FileManager.default
         let base = baseDirectory ?? fm.urls(for: .cachesDirectory, in: .userDomainMask).first!
-        self.directory = base.appendingPathComponent(name, isDirectory: true)
+        directory = base.appendingPathComponent(name, isDirectory: true)
         self.ttl = ttl
         self.maxBytes = maxBytes
 

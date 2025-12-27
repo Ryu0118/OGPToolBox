@@ -30,10 +30,10 @@ package enum CacheFactory {
         case .memory:
             return MemoryCache<Value>(maxCount: maxCount, maxBytes: maxBytes, ttl: ttl)
 
-        case .disk(let directory):
+        case let .disk(directory):
             return try? DiskCache<Value>(name: name, baseDirectory: directory, ttl: ttl, maxBytes: maxBytes)
 
-        case .memoryAndDisk(let directory):
+        case let .memoryAndDisk(directory):
             guard let disk = try? DiskCache<Value>(name: name, baseDirectory: directory, ttl: ttl, maxBytes: maxBytes) else {
                 return nil
             }

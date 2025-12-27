@@ -6,8 +6,6 @@ import OGPMetadata
 
 @Suite
 struct MemorySizeEstimableTests {
-    // MARK: - Data Tests
-
     @Test(arguments: DataTestCase.allCases)
     func dataEstimatedByteCount(_ testCase: DataTestCase) {
         let data = Data(repeating: 0, count: testCase.byteCount)
@@ -26,8 +24,6 @@ struct MemorySizeEstimableTests {
             DataTestCase(byteCount: 1024 * 1024, testDescription: "1MB"),
         ]
     }
-
-    // MARK: - OGPMetadata Tests
 
     @Test
     func emptyMetadataHasZeroSize() {
@@ -108,7 +104,7 @@ struct MemorySizeEstimableTests {
         var expectedSize = 0
         expectedSize += imageURL.utf8.count
         expectedSize += secureURL.utf8.count
-        expectedSize += MemoryLayout<Int>.size * 2  // width + height
+        expectedSize += MemoryLayout<Int>.size * 2 // width + height
         expectedSize += imageType.utf8.count
         expectedSize += imageAlt.utf8.count
         expectedSize += twitterURL.utf8.count

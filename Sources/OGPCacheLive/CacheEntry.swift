@@ -8,7 +8,7 @@ package struct CacheEntry<Value: Sendable & Codable>: Sendable, Codable {
 
     package init(value: Value, ttl: TimeInterval?) {
         self.value = value
-        self.createdAt = Date()
+        createdAt = Date()
         self.ttl = ttl
     }
 

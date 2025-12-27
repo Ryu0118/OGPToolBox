@@ -26,9 +26,9 @@ public actor OGPMetadataFetcher: Sendable {
         session: URLSession = .shared,
         cachePolicy: OGPCachePolicy<OGPMetadata> = .none
     ) {
-        self.htmlFetcher = HTMLFetcher(session: session)
-        self.parser = OGPMetadataParser()
-        self.cache = CacheFactory.makeCache(for: cachePolicy, name: "OGPMetadata")
+        htmlFetcher = HTMLFetcher(session: session)
+        parser = OGPMetadataParser()
+        cache = CacheFactory.makeCache(for: cachePolicy, name: "OGPMetadata")
     }
 
     /// Fetches OGP metadata from the specified URL.

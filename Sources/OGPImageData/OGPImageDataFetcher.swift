@@ -25,12 +25,12 @@ public actor OGPImageDataFetcher: Sendable {
         metadataCachePolicy: OGPCachePolicy<OGPMetadata> = .none,
         imageCachePolicy: OGPCachePolicy<OGPImageData> = .none
     ) {
-        self.metadataFetcher = OGPMetadataFetcher(
+        metadataFetcher = OGPMetadataFetcher(
             session: session,
             cachePolicy: metadataCachePolicy
         )
         self.session = session
-        self.cache = CacheFactory.makeCache(for: imageCachePolicy, name: "OGPImageData")
+        cache = CacheFactory.makeCache(for: imageCachePolicy, name: "OGPImageData")
     }
 
     /// Fetches OGP image data from the specified URL.
@@ -78,8 +78,6 @@ public actor OGPImageDataFetcher: Sendable {
         return try await fetch(from: url)
     }
 
-    // MARK: - Private
-
     private func fetchImageData(from imageURL: URL, metadata: OGPMetadata) async throws -> OGPImageData {
         let data: Data
         let response: URLResponse
@@ -92,7 +90,8 @@ public actor OGPImageDataFetcher: Sendable {
 
         // Check HTTP status code
         if let httpResponse = response as? HTTPURLResponse,
-           !(200..<300).contains(httpResponse.statusCode) {
+           !(200 ..< 300).contains(httpResponse.statusCode)
+        {
             throw OGPError.httpError(statusCode: httpResponse.statusCode)
         }
 

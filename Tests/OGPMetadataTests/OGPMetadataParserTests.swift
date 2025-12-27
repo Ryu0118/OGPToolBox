@@ -21,28 +21,28 @@ struct OGPMetadataParserTests {
         static let allCases: [ParseOGImageTestCase] = [
             ParseOGImageTestCase(
                 html: """
-                    <html><head>
-                    <meta property="og:image" content="https://example.com/image.jpg">
-                    </head></html>
-                    """,
+                <html><head>
+                <meta property="og:image" content="https://example.com/image.jpg">
+                </head></html>
+                """,
                 expectedURL: "https://example.com/image.jpg",
                 testDescription: "standard og:image"
             ),
             ParseOGImageTestCase(
                 html: """
-                    <html><head>
-                    <meta content="https://example.com/image.jpg" property="og:image">
-                    </head></html>
-                    """,
+                <html><head>
+                <meta content="https://example.com/image.jpg" property="og:image">
+                </head></html>
+                """,
                 expectedURL: "https://example.com/image.jpg",
                 testDescription: "content before property"
             ),
             ParseOGImageTestCase(
                 html: """
-                    <html><head>
-                    <META PROPERTY="OG:IMAGE" CONTENT="https://example.com/image.jpg">
-                    </head></html>
-                    """,
+                <html><head>
+                <META PROPERTY="OG:IMAGE" CONTENT="https://example.com/image.jpg">
+                </head></html>
+                """,
                 expectedURL: "https://example.com/image.jpg",
                 testDescription: "case insensitive"
             ),
@@ -76,14 +76,14 @@ struct OGPMetadataParserTests {
         static let allCases: [ParseOGImageMetadataTestCase] = [
             ParseOGImageMetadataTestCase(
                 html: """
-                    <html><head>
-                    <meta property="og:image:secure_url" content="https://secure.example.com/image.jpg">
-                    <meta property="og:image:width" content="1200">
-                    <meta property="og:image:height" content="630">
-                    <meta property="og:image:type" content="image/jpeg">
-                    <meta property="og:image:alt" content="A sunset">
-                    </head></html>
-                    """,
+                <html><head>
+                <meta property="og:image:secure_url" content="https://secure.example.com/image.jpg">
+                <meta property="og:image:width" content="1200">
+                <meta property="og:image:height" content="630">
+                <meta property="og:image:type" content="image/jpeg">
+                <meta property="og:image:alt" content="A sunset">
+                </head></html>
+                """,
                 expectedSecureURL: "https://secure.example.com/image.jpg",
                 expectedWidth: 1200,
                 expectedHeight: 630,
@@ -119,41 +119,41 @@ struct OGPMetadataParserTests {
         static let allCases: [ParseTwitterTestCase] = [
             ParseTwitterTestCase(
                 html: """
-                    <html><head>
-                    <meta name="twitter:image" content="https://twitter.example.com/image.jpg">
-                    <meta name="twitter:card" content="summary">
-                    </head></html>
-                    """,
+                <html><head>
+                <meta name="twitter:image" content="https://twitter.example.com/image.jpg">
+                <meta name="twitter:card" content="summary">
+                </head></html>
+                """,
                 expectedImageURL: "https://twitter.example.com/image.jpg",
                 expectedCard: .summary,
                 testDescription: "summary card"
             ),
             ParseTwitterTestCase(
                 html: """
-                    <html><head>
-                    <meta name="twitter:card" content="summary_large_image">
-                    </head></html>
-                    """,
+                <html><head>
+                <meta name="twitter:card" content="summary_large_image">
+                </head></html>
+                """,
                 expectedImageURL: nil,
                 expectedCard: .summaryLargeImage,
                 testDescription: "summary_large_image card"
             ),
             ParseTwitterTestCase(
                 html: """
-                    <html><head>
-                    <meta name="twitter:card" content="player">
-                    </head></html>
-                    """,
+                <html><head>
+                <meta name="twitter:card" content="player">
+                </head></html>
+                """,
                 expectedImageURL: nil,
                 expectedCard: .player,
                 testDescription: "player card"
             ),
             ParseTwitterTestCase(
                 html: """
-                    <html><head>
-                    <meta name="twitter:card" content="app">
-                    </head></html>
-                    """,
+                <html><head>
+                <meta name="twitter:card" content="app">
+                </head></html>
+                """,
                 expectedImageURL: nil,
                 expectedCard: .app,
                 testDescription: "app card"
@@ -164,10 +164,10 @@ struct OGPMetadataParserTests {
     @Test
     func decodeHTMLEntities() throws {
         let html = """
-            <html><head>
-            <meta property="og:image:alt" content="Tom &amp; Jerry&#39;s &quot;Adventure&quot;">
-            </head></html>
-            """
+        <html><head>
+        <meta property="og:image:alt" content="Tom &amp; Jerry&#39;s &quot;Adventure&quot;">
+        </head></html>
+        """
 
         let metadata = try parser.parse(html)
 
@@ -177,13 +177,13 @@ struct OGPMetadataParserTests {
     @Test
     func parseMultipleTags() throws {
         let html = """
-            <html><head>
-            <meta property="og:image" content="https://example.com/image.jpg">
-            <meta property="og:image:width" content="1200">
-            <meta name="twitter:image" content="https://twitter.example.com/image.jpg">
-            <meta name="twitter:card" content="summary_large_image">
-            </head></html>
-            """
+        <html><head>
+        <meta property="og:image" content="https://example.com/image.jpg">
+        <meta property="og:image:width" content="1200">
+        <meta name="twitter:image" content="https://twitter.example.com/image.jpg">
+        <meta name="twitter:card" content="summary_large_image">
+        </head></html>
+        """
 
         let metadata = try parser.parse(html)
 

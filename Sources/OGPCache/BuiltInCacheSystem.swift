@@ -20,9 +20,9 @@ public enum BuiltInCacheSystem: Sendable, Equatable {
         switch self {
         case .memory:
             nil
-        case .disk(let directory):
+        case let .disk(directory):
             directory
-        case .memoryAndDisk(let directory):
+        case let .memoryAndDisk(directory):
             directory
         }
     }

@@ -7,8 +7,6 @@ import OGPCache
 /// a web page's meta tags, including both standard OGP tags and
 /// Twitter-specific tags.
 public struct OGPMetadata: Sendable, Equatable, Codable {
-    // MARK: - Standard OGP Image Properties
-
     /// The URL of the image as specified by `og:image`.
     public let imageURL: URL?
 
@@ -27,15 +25,11 @@ public struct OGPMetadata: Sendable, Equatable, Codable {
     /// Alternative text for the image as specified by `og:image:alt`.
     public let imageAlt: String?
 
-    // MARK: - Twitter-specific Properties
-
     /// The URL of the Twitter card image as specified by `twitter:image`.
     public let twitterImageURL: URL?
 
     /// The Twitter card type as specified by `twitter:card`.
     public let twitterCard: TwitterCardType?
-
-    // MARK: - Initialization
 
     /// Creates a new OGP metadata instance.
     ///
@@ -67,8 +61,6 @@ public struct OGPMetadata: Sendable, Equatable, Codable {
         self.twitterImageURL = twitterImageURL
         self.twitterCard = twitterCard
     }
-
-    // MARK: - Computed Properties
 
     /// Returns the best available image URL.
     ///

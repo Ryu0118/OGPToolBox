@@ -14,8 +14,6 @@ struct CompositeCacheTests {
         return (composite, memory, disk)
     }
 
-    // MARK: - Basic Operations
-
     @Test(arguments: BasicOperationTestCase.allCases)
     func basicOperations(_ testCase: BasicOperationTestCase) async throws {
         let (cache, _, _) = try makeCache()
@@ -72,8 +70,6 @@ struct CompositeCacheTests {
             BasicOperationTestCase(operation: .overwrite, testDescription: "set overwrites existing value"),
         ]
     }
-
-    // MARK: - Cache Layer Tests
 
     @Test(arguments: CacheLayerTestCase.allCases)
     func cacheLayerBehavior(_ testCase: CacheLayerTestCase) async throws {

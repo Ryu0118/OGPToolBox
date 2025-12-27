@@ -27,17 +27,17 @@ public enum OGPError: Error, Sendable {
 extension OGPError: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case .invalidURL(let urlString):
+        case let .invalidURL(urlString):
             "Invalid URL: \(urlString)"
-        case .networkError(let underlying):
+        case let .networkError(underlying):
             "Network error: \(underlying.localizedDescription)"
-        case .httpError(let statusCode):
+        case let .httpError(statusCode):
             "HTTP error with status code: \(statusCode)"
-        case .parsingError(let reason):
+        case let .parsingError(reason):
             "Failed to parse HTML: \(reason)"
         case .noImageFound:
             "No OGP image found in the web page"
-        case .imageFetchError(let underlying):
+        case let .imageFetchError(underlying):
             "Failed to fetch image: \(underlying.localizedDescription)"
         case .invalidImageData:
             "The fetched data is not a valid image"

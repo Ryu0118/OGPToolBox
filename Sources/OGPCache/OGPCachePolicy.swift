@@ -13,10 +13,10 @@ public struct OGPCachePolicy<Value: Sendable>: Sendable {
         package var timeInterval: TimeInterval? {
             switch self {
             case .unlimited: nil
-            case .seconds(let value): value
-            case .minutes(let value): value * 60
-            case .hours(let value): value * 3600
-            case .days(let value): value * 86400
+            case let .seconds(value): value
+            case let .minutes(value): value * 60
+            case let .hours(value): value * 3600
+            case let .days(value): value * 86400
             }
         }
     }
@@ -29,7 +29,7 @@ public struct OGPCachePolicy<Value: Sendable>: Sendable {
         package var value: Int? {
             switch self {
             case .unlimited: nil
-            case .count(let count): count
+            case let .count(count): count
             }
         }
     }
@@ -44,9 +44,9 @@ public struct OGPCachePolicy<Value: Sendable>: Sendable {
         package var bytes: Int? {
             switch self {
             case .unlimited: nil
-            case .bytes(let value): value
-            case .kilobytes(let value): value * 1024
-            case .megabytes(let value): value * 1024 * 1024
+            case let .bytes(value): value
+            case let .kilobytes(value): value * 1024
+            case let .megabytes(value): value * 1024 * 1024
             }
         }
     }
@@ -74,7 +74,7 @@ public struct OGPCachePolicy<Value: Sendable>: Sendable {
         maxSize: MaxSize = .megabytes(50)
     ) {
         self.cacheSystem = cacheSystem
-        self.builtInCacheSystem = nil
+        builtInCacheSystem = nil
         self.ttl = ttl
         self.maxCount = maxCount
         self.maxSize = maxSize
@@ -94,18 +94,18 @@ public struct OGPCachePolicy<Value: Sendable>: Sendable {
         maxSize: MaxSize = .megabytes(50)
     ) {
         self.cacheSystem = nil
-        self.builtInCacheSystem = cacheSystem
+        builtInCacheSystem = cacheSystem
         self.ttl = ttl
         self.maxCount = maxCount
         self.maxSize = maxSize
     }
 
     private init() {
-        self.cacheSystem = nil
-        self.builtInCacheSystem = nil
-        self.ttl = .unlimited
-        self.maxCount = .unlimited
-        self.maxSize = .unlimited
+        cacheSystem = nil
+        builtInCacheSystem = nil
+        ttl = .unlimited
+        maxCount = .unlimited
+        maxSize = .unlimited
     }
 
     /// No caching.

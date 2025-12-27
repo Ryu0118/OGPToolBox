@@ -11,8 +11,6 @@ struct DiskCacheTests {
         try DiskCache<String>(name: Self.testCacheName + UUID().uuidString, ttl: ttl, maxBytes: maxBytes)
     }
 
-    // MARK: - Basic Operations
-
     @Test(arguments: BasicOperationTestCase.allCases)
     func basicOperations(_ testCase: BasicOperationTestCase) async throws {
         let cache = try makeCache()
@@ -70,8 +68,6 @@ struct DiskCacheTests {
         ]
     }
 
-    // MARK: - TTL Tests
-
     @Test(arguments: TTLTestCase.allCases)
     func ttlBehavior(_ testCase: TTLTestCase) async throws {
         let cache = try makeCache(ttl: testCase.ttl)
@@ -99,8 +95,6 @@ struct DiskCacheTests {
         ]
     }
 
-    // MARK: - Complex Value Tests
-
     @Test
     func storesComplexCodableValues() async throws {
         struct TestData: Codable, Equatable, Sendable {
@@ -118,8 +112,6 @@ struct DiskCacheTests {
 
         #expect(result == testData)
     }
-
-    // MARK: - Key Encoding Tests
 
     @Test
     func handlesSpecialCharactersInKey() async throws {

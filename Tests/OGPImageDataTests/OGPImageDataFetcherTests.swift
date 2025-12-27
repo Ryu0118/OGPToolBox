@@ -6,8 +6,6 @@ import OGPCache
 
 @Suite(.serialized)
 struct OGPImageDataFetcherTests {
-    // MARK: - Basic Fetch Tests
-
     @Test(arguments: BasicFetchTestCase.allCases)
     func basicFetch(_ testCase: BasicFetchTestCase) async throws {
         let pageURL = makeTestURL()
@@ -102,8 +100,6 @@ struct OGPImageDataFetcherTests {
         ]
     }
 
-    // MARK: - Image URL Resolution Tests
-
     @Test(arguments: ImageURLResolutionTestCase.allCases)
     func imageURLResolution(_ testCase: ImageURLResolutionTestCase) async throws {
         let pageURL = makeTestURL()
@@ -174,8 +170,6 @@ struct OGPImageDataFetcherTests {
             ),
         ]
     }
-
-    // MARK: - Error Tests
 
     @Test(arguments: ErrorTestCase.allCases)
     func errorHandling(_ testCase: ErrorTestCase) async {
@@ -301,8 +295,6 @@ struct OGPImageDataFetcherTests {
             ErrorTestCase(scenario: .invalidURLString, testDescription: "throws on invalid URL string"),
         ]
     }
-
-    // MARK: - Cache Tests
 
     @Test
     func fetchWithCacheReturnsFromCache() async throws {

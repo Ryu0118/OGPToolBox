@@ -38,7 +38,7 @@ package actor HTMLFetcher: Sendable {
         guard let httpResponse = response as? HTTPURLResponse else {
             return
         }
-        guard (200..<300).contains(httpResponse.statusCode) else {
+        guard (200 ..< 300).contains(httpResponse.statusCode) else {
             throw OGPError.httpError(statusCode: httpResponse.statusCode)
         }
     }

@@ -20,8 +20,6 @@ public struct OGPMetadataParser: Sendable {
     }
 }
 
-// MARK: - Private Implementation
-
 extension OGPMetadataParser {
     private typealias MetaTagMap = [String: String]
 

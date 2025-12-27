@@ -7,7 +7,7 @@ final class MockURLProtocol: URLProtocol, @unchecked Sendable {
     private static let lock = NSLock()
 
     /// Handlers keyed by URL host.
-    nonisolated(unsafe) private static var handlers: [String: (URLRequest) throws -> (HTTPURLResponse, Data)] = [:]
+    private nonisolated(unsafe) static var handlers: [String: (URLRequest) throws -> (HTTPURLResponse, Data)] = [:]
 
     /// Sets a handler for a specific host.
     static func setHandler(
@@ -33,7 +33,7 @@ final class MockURLProtocol: URLProtocol, @unchecked Sendable {
         handlers.removeAll()
     }
 
-    override class func canInit(with request: URLRequest) -> Bool {
+    override class func canInit(with _: URLRequest) -> Bool {
         true
     }
 
@@ -45,7 +45,7 @@ final class MockURLProtocol: URLProtocol, @unchecked Sendable {
         let host = request.url?.host ?? "default"
         guard let handler = MockURLProtocol.getHandler(for: host) else {
             let error = NSError(domain: "MockURLProtocol", code: 0, userInfo: [
-                NSLocalizedDescriptionKey: "No handler set for host: \(host)"
+                NSLocalizedDescriptionKey: "No handler set for host: \(host)",
             ])
             client?.urlProtocol(self, didFailWithError: error)
             return
