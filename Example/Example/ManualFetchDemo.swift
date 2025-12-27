@@ -21,8 +21,9 @@ struct ManualFetchDemo: View {
                 .padding()
             }
             .navigationTitle("Manual Fetch")
+            #if !os(tvOS) && !os(watchOS)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .automatic) {
                     Button {
                         showingSettings = true
                     } label: {
@@ -30,6 +31,7 @@ struct ManualFetchDemo: View {
                     }
                 }
             }
+            #endif
             .sheet(isPresented: $showingSettings) {
                 CacheSettingsView(settings: $cacheSettings)
             }
@@ -41,10 +43,14 @@ struct ManualFetchDemo: View {
             Text("URL")
                 .font(.headline)
             TextField("Enter URL", text: $urlString)
+                #if !os(tvOS)
                 .textFieldStyle(.roundedBorder)
+                #endif
                 .autocorrectionDisabled()
+                #if os(iOS)
                 .textInputAutocapitalization(.never)
                 .keyboardType(.URL)
+                #endif
         }
     }
 

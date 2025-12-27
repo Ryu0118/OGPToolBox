@@ -19,8 +19,9 @@ struct OGPImageViewDemo: View {
                 .padding()
             }
             .navigationTitle("OGPImageView Demo")
+            #if !os(tvOS) && !os(watchOS)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .automatic) {
                     Button {
                         showingSettings = true
                     } label: {
@@ -28,6 +29,7 @@ struct OGPImageViewDemo: View {
                     }
                 }
             }
+            #endif
             .sheet(isPresented: $showingSettings) {
                 CacheSettingsView(settings: $cacheSettings)
             }
@@ -42,10 +44,14 @@ struct OGPImageViewDemo: View {
             Text("URL")
                 .font(.headline)
             TextField("Enter URL", text: $urlString)
+                #if !os(tvOS)
                 .textFieldStyle(.roundedBorder)
+                #endif
                 .autocorrectionDisabled()
+                #if os(iOS)
                 .textInputAutocapitalization(.never)
                 .keyboardType(.URL)
+                #endif
         }
     }
 
@@ -106,7 +112,7 @@ struct OGPImageViewDemo: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
             }
             .padding()
-            .background(Color(.secondarySystemBackground))
+            .background(.gray.opacity(0.1))
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
     }

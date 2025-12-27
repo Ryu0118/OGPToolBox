@@ -17,7 +17,7 @@ struct ErrorView: View {
         }
         .padding()
         .frame(maxWidth: .infinity)
-        .background(Color(.secondarySystemBackground))
+        .background(.gray.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }

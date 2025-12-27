@@ -28,6 +28,7 @@ jobs:
           xcodebuild -project Example/Example.xcodeproj \
             -scheme Example \
             -destination '${{ matrix.destination }}' \
+            CODE_SIGNING_ALLOWED=NO \
             build
 
   test:

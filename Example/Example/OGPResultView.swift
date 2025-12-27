@@ -2,6 +2,12 @@ import OGPImageData
 import OGPMetadata
 import SwiftUI
 
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
+
 struct OGPResultView: View {
     let result: FetchResult
 
@@ -11,22 +17,34 @@ struct OGPResultView: View {
             metadataSection
         }
         .padding()
-        .background(Color(.secondarySystemBackground))
+        .background(.gray.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
     @ViewBuilder
     private var imageSection: some View {
-        if let uiImage = UIImage(data: result.imageData.data) {
+        if let image = makeImage(from: result.imageData.data) {
             VStack(alignment: .leading, spacing: 8) {
                 Text("OGP Image")
                     .font(.headline)
-                Image(uiImage: uiImage)
+                image
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             }
         }
+    }
+
+    private func makeImage(from data: Data) -> Image? {
+        #if canImport(UIKit)
+        guard let uiImage = UIImage(data: data) else { return nil }
+        return Image(uiImage: uiImage)
+        #elseif canImport(AppKit)
+        guard let nsImage = NSImage(data: data) else { return nil }
+        return Image(nsImage: nsImage)
+        #else
+        return nil
+        #endif
     }
 
     private var metadataSection: some View {

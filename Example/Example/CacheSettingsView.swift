@@ -20,8 +20,12 @@ struct CacheSettingsView: View {
                     Section("Time to Live (TTL)") {
                         HStack {
                             TextField("Value", value: $settings.ttlValue, format: .number)
+                                #if os(iOS)
                                 .keyboardType(.decimalPad)
+                                #endif
+                                #if !os(tvOS)
                                 .textFieldStyle(.roundedBorder)
+                                #endif
                                 .frame(width: 80)
                             Picker("Unit", selection: $settings.ttlUnit) {
                                 ForEach(TTLUnit.allCases, id: \.self) { unit in
@@ -32,10 +36,12 @@ struct CacheSettingsView: View {
                         }
                     }
 
+                    #if !os(tvOS)
                     Section("Limits") {
                         Stepper("Max Count: \(settings.maxCount)", value: $settings.maxCount, in: 1 ... 1000, step: 10)
                         Stepper("Max Size: \(settings.maxSizeMB) MB", value: $settings.maxSizeMB, in: 1 ... 500, step: 10)
                     }
+                    #endif
                 }
 
                 Section {
@@ -43,14 +49,18 @@ struct CacheSettingsView: View {
                 }
             }
             .navigationTitle("Cache Settings")
+            #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
+            #if !os(tvOS) && !os(watchOS)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .automatic) {
                     Button("Done") {
                         dismiss()
                     }
                 }
             }
+            #endif
         }
     }
 
