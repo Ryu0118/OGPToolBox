@@ -192,4 +192,137 @@ struct OGPMetadataParserTests {
         #expect(metadata.twitterImageURL?.absoluteString == "https://twitter.example.com/image.jpg")
         #expect(metadata.twitterCard == .summaryLargeImage)
     }
+
+    @Test(arguments: ParseOGVideoTestCase.allCases)
+    func parseOGVideo(_ testCase: ParseOGVideoTestCase) throws {
+        let metadata = try parser.parse(testCase.html)
+        #expect(metadata.videoURL?.absoluteString == testCase.expectedURL)
+        #expect(metadata.videoSecureURL?.absoluteString == testCase.expectedSecureURL)
+        #expect(metadata.videoWidth == testCase.expectedWidth)
+        #expect(metadata.videoHeight == testCase.expectedHeight)
+        #expect(metadata.videoType == testCase.expectedType)
+    }
+
+    struct ParseOGVideoTestCase: CustomTestStringConvertible, Sendable {
+        let html: String
+        let expectedURL: String?
+        let expectedSecureURL: String?
+        let expectedWidth: Int?
+        let expectedHeight: Int?
+        let expectedType: String?
+        let testDescription: String
+
+        static let allCases: [ParseOGVideoTestCase] = [
+            ParseOGVideoTestCase(
+                html: """
+                <html><head>
+                <meta property="og:video" content="https://example.com/video.mp4">
+                <meta property="og:video:secure_url" content="https://secure.example.com/video.mp4">
+                <meta property="og:video:width" content="1920">
+                <meta property="og:video:height" content="1080">
+                <meta property="og:video:type" content="video/mp4">
+                </head></html>
+                """,
+                expectedURL: "https://example.com/video.mp4",
+                expectedSecureURL: "https://secure.example.com/video.mp4",
+                expectedWidth: 1920,
+                expectedHeight: 1080,
+                expectedType: "video/mp4",
+                testDescription: "all video metadata fields"
+            ),
+            ParseOGVideoTestCase(
+                html: """
+                <html><head>
+                <meta property="og:video" content="https://example.com/video.mp4">
+                </head></html>
+                """,
+                expectedURL: "https://example.com/video.mp4",
+                expectedSecureURL: nil,
+                expectedWidth: nil,
+                expectedHeight: nil,
+                expectedType: nil,
+                testDescription: "video URL only"
+            ),
+            ParseOGVideoTestCase(
+                html: "<html><head></head></html>",
+                expectedURL: nil,
+                expectedSecureURL: nil,
+                expectedWidth: nil,
+                expectedHeight: nil,
+                expectedType: nil,
+                testDescription: "no video metadata"
+            ),
+        ]
+    }
+
+    @Test(arguments: ParseOGAudioTestCase.allCases)
+    func parseOGAudio(_ testCase: ParseOGAudioTestCase) throws {
+        let metadata = try parser.parse(testCase.html)
+        #expect(metadata.audioURL?.absoluteString == testCase.expectedURL)
+        #expect(metadata.audioSecureURL?.absoluteString == testCase.expectedSecureURL)
+        #expect(metadata.audioType == testCase.expectedType)
+    }
+
+    struct ParseOGAudioTestCase: CustomTestStringConvertible, Sendable {
+        let html: String
+        let expectedURL: String?
+        let expectedSecureURL: String?
+        let expectedType: String?
+        let testDescription: String
+
+        static let allCases: [ParseOGAudioTestCase] = [
+            ParseOGAudioTestCase(
+                html: """
+                <html><head>
+                <meta property="og:audio" content="https://example.com/audio.mp3">
+                <meta property="og:audio:secure_url" content="https://secure.example.com/audio.mp3">
+                <meta property="og:audio:type" content="audio/mpeg">
+                </head></html>
+                """,
+                expectedURL: "https://example.com/audio.mp3",
+                expectedSecureURL: "https://secure.example.com/audio.mp3",
+                expectedType: "audio/mpeg",
+                testDescription: "all audio metadata fields"
+            ),
+            ParseOGAudioTestCase(
+                html: """
+                <html><head>
+                <meta property="og:audio" content="https://example.com/audio.mp3">
+                </head></html>
+                """,
+                expectedURL: "https://example.com/audio.mp3",
+                expectedSecureURL: nil,
+                expectedType: nil,
+                testDescription: "audio URL only"
+            ),
+            ParseOGAudioTestCase(
+                html: "<html><head></head></html>",
+                expectedURL: nil,
+                expectedSecureURL: nil,
+                expectedType: nil,
+                testDescription: "no audio metadata"
+            ),
+        ]
+    }
+
+    @Test
+    func parseAllMediaTypes() throws {
+        let html = """
+        <html><head>
+        <meta property="og:image" content="https://example.com/image.jpg">
+        <meta property="og:video" content="https://example.com/video.mp4">
+        <meta property="og:video:type" content="video/mp4">
+        <meta property="og:audio" content="https://example.com/audio.mp3">
+        <meta property="og:audio:type" content="audio/mpeg">
+        </head></html>
+        """
+
+        let metadata = try parser.parse(html)
+
+        #expect(metadata.imageURL?.absoluteString == "https://example.com/image.jpg")
+        #expect(metadata.videoURL?.absoluteString == "https://example.com/video.mp4")
+        #expect(metadata.videoType == "video/mp4")
+        #expect(metadata.audioURL?.absoluteString == "https://example.com/audio.mp3")
+        #expect(metadata.audioType == "audio/mpeg")
+    }
 }

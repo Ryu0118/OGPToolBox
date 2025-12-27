@@ -77,6 +77,14 @@ extension OGPMetadataParser {
             imageHeight: extractInt(from: tags, key: "og:image:height"),
             imageType: tags["og:image:type"],
             imageAlt: tags["og:image:alt"],
+            videoURL: extractURL(from: tags, key: "og:video"),
+            videoSecureURL: extractURL(from: tags, key: "og:video:secure_url"),
+            videoWidth: extractInt(from: tags, key: "og:video:width"),
+            videoHeight: extractInt(from: tags, key: "og:video:height"),
+            videoType: tags["og:video:type"],
+            audioURL: extractURL(from: tags, key: "og:audio"),
+            audioSecureURL: extractURL(from: tags, key: "og:audio:secure_url"),
+            audioType: tags["og:audio:type"],
             twitterImageURL: extractURL(from: tags, key: "twitter:image"),
             twitterCard: extractTwitterCardType(from: tags)
         )
