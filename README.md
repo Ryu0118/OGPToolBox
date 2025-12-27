@@ -2,6 +2,10 @@
 
 A Swift toolbox for fetching and displaying Open Graph Protocol (OGP) images from web pages.
 
+<div align="center">
+    <img width="200" alt="screenshot" src="https://github.com/user-attachments/assets/aa123f2a-97c6-4eb8-9a46-8425eede5143" />
+</div>
+
 ## Features
 
 - Fetch and display OGP images with SwiftUI
