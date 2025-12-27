@@ -16,7 +16,7 @@ env:
 jobs:
   test:
     name: Swift Test
-    runs-on: macos-15
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v6
       - name: Run tests
@@ -24,7 +24,7 @@ jobs:
 
   build-example:
     name: Build Example (${{ matrix.destination }})
-    runs-on: macos-15
+    runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
