@@ -17,6 +17,7 @@ OGPToolBox provides a modular toolkit for working with OGP metadata, specificall
 | OGPCacheLive | ❌ Internal | Built-in cache implementation |
 | OGPMetadata | ✅ Public | Metadata fetching and parsing |
 | OGPImageData | ✅ Public | Image Data fetching |
+| OGPPipeline | ✅ Public | Shared pipeline with cache management |
 | OGPImageView | ✅ Public | SwiftUI components |
 
 ### Directory Structure
@@ -28,6 +29,7 @@ Sources/
 ├── OGPCacheLive/     # Built-in cache implementation (internal)
 ├── OGPMetadata/      # Metadata fetching and parsing
 ├── OGPImageData/     # Image Data fetching
+├── OGPPipeline/      # Shared pipeline with cache management
 └── OGPImageView/     # SwiftUI components
 
 Tests/
@@ -40,14 +42,27 @@ Tests/
 
 ### Module Dependencies
 
+```mermaid
+graph LR
+    OGPImageView --> OGPPipeline
+    OGPPipeline --> OGPImageData
+    OGPPipeline --> OGPMetadata
+    OGPPipeline --> OGPCacheLive
+    OGPImageData --> OGPMetadata
+    OGPImageData --> OGPCacheLive
+    OGPMetadata --> OGPCore
+    OGPMetadata --> OGPCacheLive
+    OGPCacheLive --> OGPCache
 ```
-OGPImageView ───► OGPImageData ───► OGPMetadata ───► OGPCore
-     │                 │                 │
-     └─────────► OGPCacheLive ◄──────────┘
-                       │
-                       ▼
-                   OGPCache
-```
+
+### OGPPipeline Design
+
+`OGPPipeline` is the central component that owns cache instances:
+
+- **Shared singleton**: `OGPPipeline.shared` provides shared caching across all views
+- **Cache ownership**: The pipeline owns cache instances, preventing cache reset on view recreation
+- **Preset configurations**: `.default`, `.memoryOnly`, `.aggressive`, `.noCache`
+- **Dependency injection**: Fetchers receive cache via `package` init, not creating their own
 
 ### Supported OGP Meta Tags
 
