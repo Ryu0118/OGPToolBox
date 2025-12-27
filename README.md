@@ -18,7 +18,7 @@ Add the package to your `Package.swift` dependencies:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/user/OGPToolBox.git", from: "1.0.0")
+    .package(url: "https://github.com/Ryu0118/OGPToolBox.git", from: "0.1.0")
 ]
 ```
 
