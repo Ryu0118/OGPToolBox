@@ -33,6 +33,25 @@ public actor OGPImageDataFetcher: Sendable {
         cache = CacheFactory.makeCache(for: imageCachePolicy, name: "OGPImageData")
     }
 
+    /// Creates a new image data fetcher with injected dependencies.
+    ///
+    /// This initializer is used by `OGPPipeline` to share cache instances
+    /// and metadata fetcher across multiple components.
+    ///
+    /// - Parameters:
+    ///   - session: The URLSession to use for network requests.
+    ///   - metadataFetcher: The metadata fetcher to use.
+    ///   - cache: The cache instance to use, or `nil` for no caching.
+    package init(
+        session: URLSession,
+        metadataFetcher: OGPMetadataFetcher,
+        cache: (any OGPCaching<OGPImageData>)?
+    ) {
+        self.metadataFetcher = metadataFetcher
+        self.session = session
+        self.cache = cache
+    }
+
     /// Fetches OGP image data from the specified URL.
     ///
     /// - Parameter url: The web page URL to fetch the OGP image from.

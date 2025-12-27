@@ -31,6 +31,23 @@ public actor OGPMetadataFetcher: Sendable {
         cache = CacheFactory.makeCache(for: cachePolicy, name: "OGPMetadata")
     }
 
+    /// Creates a new metadata fetcher with an injected cache instance.
+    ///
+    /// This initializer is used by `OGPPipeline` to share cache instances
+    /// across multiple fetchers.
+    ///
+    /// - Parameters:
+    ///   - session: The URLSession to use for network requests.
+    ///   - cache: The cache instance to use, or `nil` for no caching.
+    package init(
+        session: URLSession,
+        cache: (any OGPCaching<OGPMetadata>)?
+    ) {
+        htmlFetcher = HTMLFetcher(session: session)
+        parser = OGPMetadataParser()
+        self.cache = cache
+    }
+
     /// Fetches OGP metadata from the specified URL.
     ///
     /// - Parameter url: The web page URL to fetch metadata from.

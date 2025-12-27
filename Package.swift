@@ -25,6 +25,10 @@ let package = Package(
             targets: ["OGPImageData"]
         ),
         .library(
+            name: "OGPPipeline",
+            targets: ["OGPPipeline"]
+        ),
+        .library(
             name: "OGPImageView",
             targets: ["OGPImageView"]
         ),
@@ -52,8 +56,12 @@ let package = Package(
             dependencies: ["OGPMetadata", "OGPCache", "OGPCacheLive"]
         ),
         .target(
+            name: "OGPPipeline",
+            dependencies: ["OGPMetadata", "OGPImageData", "OGPCache", "OGPCacheLive"]
+        ),
+        .target(
             name: "OGPImageView",
-            dependencies: ["OGPImageData", "OGPMetadata", "OGPCache"]
+            dependencies: ["OGPPipeline", "OGPImageData", "OGPMetadata", "OGPCache"]
         ),
 
         // Test targets
