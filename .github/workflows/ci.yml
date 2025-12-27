@@ -6,45 +6,37 @@ on:
   pull_request:
     branches: [main]
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-env:
-  DEVELOPER_DIR: /Applications/Xcode_26.1.1.app/Contents/Developer
-
 jobs:
-  test:
-    name: Swift Test
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: Run tests
-        run: swift test
-
   build-example:
-    name: Build Example (${{ matrix.destination }})
     runs-on: macos-latest
     strategy:
-      fail-fast: false
       matrix:
-        include:
-          - destination: "platform=iOS Simulator,name=iPhone 16"
-            name: iOS
-          - destination: "platform=macOS"
-            name: macOS
-          - destination: "platform=tvOS Simulator,name=Apple TV"
-            name: tvOS
-          - destination: "platform=watchOS Simulator,name=Apple Watch Series 10 (46mm)"
-            name: watchOS
-          - destination: "platform=visionOS Simulator,name=Apple Vision Pro"
-            name: visionOS
+        destination:
+          - platform=macOS
+          - generic/platform=iOS
+          - generic/platform=tvOS
+          - generic/platform=watchOS
+          - generic/platform=visionOS
     steps:
       - uses: actions/checkout@v6
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_26.1.1.app
+
       - name: Build Example
         run: |
-          xcodebuild build \
-            -project Example/Example.xcodeproj \
+          xcodebuild -project Example/Example.xcodeproj \
             -scheme Example \
-            -destination "${{ matrix.destination }}" \
-            CODE_SIGNING_ALLOWED=NO
+            -destination '${{ matrix.destination }}' \
+            build
+
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_26.1.1.app
+
+      - name: Run Tests
+        run: swift test
