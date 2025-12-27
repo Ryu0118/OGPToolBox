@@ -49,6 +49,6 @@ jobs:
       - name: Run Tests
         run: |
           xcodebuild test \
-            -scheme OGPToolBox \
+            -scheme OGPToolBox-Package \
             -destination '${{ matrix.destination }}' \
             -skipPackagePluginValidation
