@@ -157,3 +157,7 @@ struct MyFeatureTests {
     }
 }
 ```
+
+## Documentation and Code
+
+- When documentation and the existing code disagree, follow the conventions used in the existing code, and in your final reply list every inconsistency you found between the documentation and the code.
